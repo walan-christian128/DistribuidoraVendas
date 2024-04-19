@@ -144,7 +144,7 @@ Produtos produtos = new Produtos();
 
 					<h2 class="d-flex justify-content-center">Itens Da Venda</h2>
 					<div>
-						<table class="table table-dark table-hover" id="carrinho">
+						<table class="table table-dark table-hover" id="carrinho" name="">
 							<thead>
 								<tr>
 									<th>Codigo</th>
@@ -154,17 +154,22 @@ Produtos produtos = new Produtos();
 									<th>Subtotal</th>
 								</tr>
 							</thead>
-							 <tbody>
-        <% 
-        @SuppressWarnings("unchecked")
-        List<String> linhasTabela = (List<String>) request.getAttribute("linhasTabela");
-        if (linhasTabela != null) {
-            for (String linha : linhasTabela) {
-                out.println(linha);
-            }
-        }
-        %>
-    </tbody>
+							<tbody>
+								<%
+								@SuppressWarnings("unchecked")
+								List<String> linhasTabela = (List<String>) request.getAttribute("carrinho");
+								if (linhasTabela != null) {
+									for (String linha : linhasTabela) {
+								%>
+								<tr>
+									<td><%=linha%></td>
+								</tr>
+								<%
+								}
+								}
+								%>
+							</tbody>
+
 						</table>
 
 					</div>
@@ -197,50 +202,68 @@ Produtos produtos = new Produtos();
 		integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
 		crossorigin="anonymous"></script>
 	<script>
-	document.addEventListener("DOMContentLoaded", function() {
-	    // Seleciona o botão "Adicionar item"
-	    var adicionarItemBtn = document.querySelector("#adicionarItemBtn");
+		document
+				.addEventListener(
+						"DOMContentLoaded",
+						function() {
+							// Seleciona o botão "Adicionar item"
+							var adicionarItemBtn = document
+									.querySelector("#adicionarItemBtn");
 
-	    // Adiciona um ouvinte de evento de clique no botão "Adicionar item"
-	    adicionarItemBtn.addEventListener("click", function(event) {
-	        event.preventDefault();
-	        console.log("Botão clicado!");
+							// Adiciona um ouvinte de evento de clique no botão "Adicionar item"
+							adicionarItemBtn
+									.addEventListener(
+											"click",
+											function(event) {
+												event.preventDefault();
+												console.log("Botão clicado!");
 
-	        // Coletar os valores dos campos do formulário
-	        var idProd = document.querySelector("#validationCustom02").value;
-	        var desProd = document.querySelector("#desProd").value;
-	        var qtdProd = document.querySelector("#qtdProd").value;
-	        var precoProd = document.querySelector("#precoProd").value;
-	        var compraProd = document.querySelector("#compraProd").value;
+												// Coletar os valores dos campos do formulário
+												var idProd = document
+														.querySelector("#validationCustom02").value;
+												var desProd = document
+														.querySelector("#desProd").value;
+												var qtdProd = document
+														.querySelector("#qtdProd").value;
+												var precoProd = document
+														.querySelector("#precoProd").value;
+												var compraProd = document
+														.querySelector("#compraProd").value;
 
-	        // Criar um objeto FormData para enviar os dados para o servlet
-	        var formData = new FormData();
-	        formData.append("idProd", idProd);
-	        formData.append("desProd", desProd);
-	        formData.append("qtdProd", qtdProd);
-	        formData.append("precoProd", precoProd);
-	        formData.append("compraProd", compraProd);
+												// Criar um objeto FormData para enviar os dados para o servlet
+												var formData = new FormData();
+												formData.append("idProd",
+														idProd);
+												formData.append("desProd",
+														desProd);
+												formData.append("qtdProd",
+														qtdProd);
+												formData.append("precoProd",
+														precoProd);
+												formData.append("compraProd",
+														compraProd);
 
-	        // Faça uma solicitação AJAX para enviar os dados do formulário para o servlet
-	        var xhr = new XMLHttpRequest();
-	        xhr.open("POST", "inserirItens");
-	        xhr.onload = function() {
-	            // Verifica se a solicitação foi bem-sucedida
-	            if (xhr.status === 200) {
-	                // Aqui você pode fazer qualquer manipulação adicional do resultado, se necessário
-	                // Por exemplo, atualizar a tabela do carrinho sem recarregar a página
-	                // Ou exibir uma mensagem de sucesso
-	                alert('Item adicionado com sucesso!');
-	            } else {
-	                // Exibe um alerta em caso de erro
-	                alert('Erro ao processar a solicitação. Tente novamente.');
-	            }
-	        };
-	        xhr.send(formData);
-	    });
-	});
-
-</script>
+												// Faça uma solicitação AJAX para enviar os dados do formulário para o servlet
+												var xhr = new XMLHttpRequest();
+												xhr
+														.open("POST",
+																"inserirItens");
+												xhr.onload = function() {
+													// Verifica se a solicitação foi bem-sucedida
+													if (xhr.status === 200) {
+														// Aqui você pode fazer qualquer manipulação adicional do resultado, se necessário
+														// Por exemplo, atualizar a tabela do carrinho sem recarregar a página
+														// Ou exibir uma mensagem de sucesso
+														alert('Item adicionado com sucesso!');
+													} else {
+														// Exibe um alerta em caso de erro
+														alert('Erro ao processar a solicitação. Tente novamente.');
+													}
+												};
+												xhr.send(formData);
+											});
+						});
+	</script>
 
 
 </body>

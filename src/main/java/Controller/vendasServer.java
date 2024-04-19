@@ -64,53 +64,55 @@ public class vendasServer extends HttpServlet {
 	}
 
 	private void inserirItens(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		  // Função para limpar o carrinho
-        HttpSession session = request.getSession();
-        session.removeAttribute("carrinho");
-        
-        // Obter os valores dos campos de entrada
-        String idProd = request.getParameter("idProd");
-        String desProd = request.getParameter("desProd");
-        int qtdProd = Integer.parseInt(request.getParameter("qtdProd"));
-        double precoProd = Double.parseDouble(request.getParameter("precoProd"));
-        double compraProd = Double.parseDouble(request.getParameter("compraProd"));
-        
-        // Calcular o subtotal
-        double subtotal = qtdProd * precoProd;
-        
-        // Atualizar o total da venda
-        double total = (Double) session.getAttribute("total");
-        total += subtotal;
-        session.setAttribute("total", total);
-        
-        // Calcular o lucro
-        double itemLucro = (precoProd - compraProd) * qtdProd;
-        double lucro = (Double) session.getAttribute("lucro");
-        lucro += itemLucro;
-        session.setAttribute("lucro", lucro);
-        
-        // Adicionar os valores à lista de itens do carrinho
-        StringBuilder carrinho = (StringBuilder) session.getAttribute("carrinho");
-        if (carrinho == null) {
-            carrinho = new StringBuilder();
-        }
-        carrinho.append("<tr><td>").append(idProd).append("</td><td>").append(desProd).append("</td><td>").append(qtdProd).append("</td><td>").append(precoProd).append("</td><td>").append(subtotal).append("</td></tr>");
-        request.setAttribute("linhasTabela", carrinho.toString());   
-        session.setAttribute("carrinho", carrinho.toString());
-        
-        
-        // Redirecionar para a página realizarVendas.jsp
-        response.sendRedirect("realizarVendas.jsp");
-        
-        System.out.println(idProd);
-        System.out.println(desProd);
-        System.out.println(qtdProd);
-        System.out.println(precoProd);
-        System.out.println(total);
-        System.out.println(subtotal);
-        System.out.println(lucro);
-    }
-	
+	    // Função para limpar o carrinho
+	    HttpSession session = request.getSession();
+	    session.removeAttribute("carrinho");
+	    
+	    // Obter os valores dos campos de entrada
+	    String idProd = request.getParameter("idProd");
+	    String desProd = request.getParameter("desProd");
+	    int qtdProd = Integer.parseInt(request.getParameter("qtdProd"));
+	    double precoProd = Double.parseDouble(request.getParameter("precoProd"));
+	    double compraProd = Double.parseDouble(request.getParameter("compraProd"));
+	    
+	    // Calcular o subtotal
+	    double subtotal = qtdProd * precoProd;
+	    
+	    // Atualizar o total da venda
+	    double total = (Double) session.getAttribute("total");
+	    total += subtotal;
+	    session.setAttribute("total", total);
+	    
+	    // Calcular o lucro
+	    double itemLucro = (precoProd - compraProd) * qtdProd;
+	    double lucro = (Double) session.getAttribute("lucro");
+	    lucro += itemLucro;
+	    session.setAttribute("lucro", lucro);
+	    
+	    // Criar a linha da tabela com os dados do item
+	    String linhaTabela = "<tr><td>" + idProd + "</td><td>" + desProd + "</td><td>" + qtdProd + "</td><td>" + precoProd + "</td><td>" + subtotal + "</td></tr>";
+	    
+	    // Adicionar a linha à lista de itens do carrinho
+	    StringBuilder carrinho = (StringBuilder) session.getAttribute("carrinho");
+	    if (carrinho == null) {
+	        carrinho = new StringBuilder();
+	    }
+	    carrinho.append(linhaTabela);
+	    session.setAttribute("carrinho", carrinho.toString());
+	    
+	    // Redirecionar para a página realizarVendas.jsp
+	    response.sendRedirect("realizarVendas.jsp");
+	    
+	    // Apenas para depuração
+	    System.out.println(idProd);
+	    System.out.println(desProd);
+	    System.out.println(qtdProd);
+	    System.out.println(precoProd);
+	    System.out.println(total);
+	    System.out.println(subtotal);
+	    System.out.println(lucro);
+	    System.out.println(linhaTabela);
+	}
 
 
 	
